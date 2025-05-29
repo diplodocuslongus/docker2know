@@ -45,11 +45,11 @@ https://docs.docker.com/engine/security/rootless/
 
 `docker image pull` can be replaced by `docker pull`!
 
-docker image hello-world
+    docker image hello-world
 
 Let it run so it download the image.
 
-docker image pull ros:humble
+    docker image pull ros:humble
 
 Will pull the humble ros2 image.
 
@@ -61,6 +61,13 @@ docker image rm or docker rmi
 docker image rm -f name_of_the_docker
 
 ex docker image rm -f hello-world
+
+If the image is < none>  the above won't work, use:
+
+    docker rmi $(docker images -f "dangling=true" -q) --force
+
+(tested ok)
+See: https://stackoverflow.com/questions/33913020/docker-remove-none-tag-images
 
 ### run a container
 
@@ -84,14 +91,47 @@ Or docker container stop NAME_OF_THE_CONTAINER (from docker ps).
 
 ### remove a container
 
-docker container rm NAME_OF_THE_CONTAINER
+    docker container rm NAME_OF_THE_CONTAINER
 
 or docker rm NAME_OF_THE_CONTAINER
 
-Delete all container:
+### Delete all container:
 
 docker container prune
 
+### clear build cache
+
+    docker builder prune -a
+
+### setup mirror to update ubuntu 
+
+configure Docker to use a mirror for pulling Ubuntu images, you need to modify the daemon.json file and restart the Docker daemon. Specifically, you'll add a registry-mirrors entry to this file, listing the desired mirror URL(s)
+    Edit daemon.json:
+        Open the Docker daemon configuration file: sudo nano /etc/docker/daemon.json
+        If the file doesn't exist, create it.
+        Add the registry-mirrors key and a list of your desired mirror URLs: 
+
+
+   {
+     "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]  // Example: USTC mirror
+   }
+
+We can add multiple mirrors, separated by commas: 
+
+
+   {
+     "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/", "https://registry-1.docker.io/"]
+   }
+
+Restart the Docker daemon:
+    
+    sudo systemctl restart docker
+see:
+https://stackoverflow.com/questions/62034545/dockerfile-how-to-set-apt-mirror-based-on-the-ubuntu-release
+and
+https://docs.docker.com/docker-hub/image-library/mirror/#:~:text=Configure%20the%20Docker%20daemon%20Either%20pass%20the,and%20value%2C%20to%20make%20the%20change%20persistent.
+
+Not tested!
 
 
 ## Problems, issues
