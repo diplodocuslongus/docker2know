@@ -17,7 +17,7 @@ Add your user to the docker group.
 
     sudo usermod -aG docker $USER
 
-Logout and login.
+Logout and login. Or try `newgrp docker` in the terminal where to test or use docker.
 
 On ubuntu and derived, docker start on boot by default. On other linux, or if it doesn't, do:
 
@@ -71,7 +71,7 @@ See: https://stackoverflow.com/questions/33913020/docker-remove-none-tag-images
 
 ### run a container
 
-docker run -it ros:humble
+    docker run -it ros:humble
 
 -it: i = interactive, t = tty
 
@@ -79,7 +79,7 @@ docker run -it ros:humble
 
 docker container ls or docker ps
 
-docker ps -a
+    docker ps -a
 
 Will list all the container, even the stopped ones.
 
@@ -97,7 +97,7 @@ or docker rm NAME_OF_THE_CONTAINER
 
 ### Delete all container:
 
-docker container prune
+    docker container prune
 
 ### clear build cache
 
